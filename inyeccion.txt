@@ -1,0 +1,102 @@
+A
+Grande
+Nach
+Interprete 1
+12
+nach-grande.mp3
+
+A
+Not Afraid
+Eminem
+Interprete 2
+488
+not-afrad-eminem.mp3
+2
+
+A
+Exodo
+Nach
+Interprete 1
+455
+exodo-nach.mp3
+3
+
+A
+Love The Way You Lie
+Eminem
+Interprete 2
+67
+love-the-way-you-lie-eminem.mp3
+4
+
+A
+Es Épico
+Canserbero
+Interprete 3
+4
+es-epico-canserbero.mp3
+3
+
+A
+Take Me To Church
+Hozier
+Interprete 5
+78
+take-me-to-church-hozier.mp3
+5
+
+A
+All of Me
+John Legend
+Interprete 3
+88
+all-of-me-jl.mp3
+5
+
+A
+La Carencia
+Panteón Rococó
+Interprete 6
+77
+la-carencia-pr.mp3
+5
+
+A
+La Dosis Perfecta
+Panteón Rococó
+Interprete 6
+78
+la-dosis-perfecta-pr.mp3
+6
+
+A
+Toxicity
+System Of A Down
+Interprete 7
+90
+toxicity-soad.mp3
+3
+
+A
+Chop Suey!
+System Of A Down
+Interprete 7
+94
+chop-suey-soad.mp3
+1
+
+A
+Smells Like Teen Spirit
+Nirvana
+Interprete 8
+1
+smells-like-teen-spirit-nirvana.mp3
+3
+
+A
+Bring Me To Life
+Evanescence
+Interprete 4
+67
+bring-me-to-life-evanescence.mp3
+5
