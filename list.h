@@ -367,7 +367,7 @@ void List<T, SIZE>::sortDataInsert() {
         j = i;
         aux = data[j];
 
-        while ( j > 0 and aux < data[j - 1] ) {
+        while ( j > 0 and *(aux) < *(data[j - 1]) ) {
             data[j] = data[j-1];
             j--;
             }

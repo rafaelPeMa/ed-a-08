@@ -44,7 +44,7 @@ int main() {
         cout << "Excepcion " << ex.what() << endl;
     }
 
-    l.sortDataMerge();
+    l.sortDataShell();
 
     cout << "Lista: " << endl;
     cout << l.toString() << endl;
