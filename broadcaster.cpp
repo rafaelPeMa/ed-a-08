@@ -338,11 +338,11 @@ void Broadcaster::orderData() {
 
     switch ( order ) {
         case 'A': {
-            songs->sortDataMerge();
+            songs->sortDataBubble();
             }
         break;
         case 'B': {
-            songs->sortDataQuick();
+            songs->sortDataSelect();
             }
         break;
         case 'C': {

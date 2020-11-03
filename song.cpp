@@ -10,7 +10,7 @@ const int Song::COMPARE_BY_RANKING;
 
 Song::Song() { }
 
-Song::Song(Song& s) : name(s.name), author(s.author), interpreter(s.interpreter), ranking(s.ranking), sourceMP3(s.sourceMP3) { }
+Song::Song(const Song& s) : name(s.name), author(s.author), interpreter(s.interpreter), ranking(s.ranking), sourceMP3(s.sourceMP3) { }
 
 Song& Song::operator = (const Song& s) {
     name = s.name;
@@ -21,6 +21,8 @@ Song& Song::operator = (const Song& s) {
 
     return *this;
     }
+
+Song::~Song() { }
 
 string Song::getName() const {
     return name;

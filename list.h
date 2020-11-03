@@ -26,14 +26,14 @@ template<class T, int SIZE = 3200>
 class List {
 
     private:
-        T data[SIZE];
+        T** data;
         int last;
 
         bool isValidPos(const int&) const;
 
         void copyAll(const List<T, SIZE>&);
 
-        void swapData(T&, T&);
+        void swapData(T*&, T*&);
 
         void sortDataMerge(const int&, const int&);
         void sortDataQuick(const int&, const int&);
@@ -41,6 +41,7 @@ class List {
     public:
         List();
         List(List<T, SIZE>&);
+        ~List();
 
         bool isEmpty() const;
         bool isFull() const;
@@ -88,55 +89,58 @@ bool List<T, SIZE>::isValidPos(const int& pos) const {
 
 template<class T, int SIZE>
 void List<T, SIZE>::copyAll(const List<T, SIZE>& l) {
-    for (int i(0); i < l.last ; i++) {
-        data[i] = l.data[i];
+    deleteAll();
+
+    T* aux;
+    int i = 0;
+
+    while (i <= l.last) {
+        aux = new T( *(l.data[i]) );
+        if ( aux == nullptr ) {
+            throw ListException("Memoria insuficiente, copyAll");
+            }
+        data[i] = aux;
+        i++;
         }
+
     last = l.last;
     }
 
 template<class T, int SIZE>
-void List<T, SIZE>::swapData(T &a, T &b) {
-    T aux(a);
+void List<T, SIZE>::swapData(T*& a, T*& b) {
+    T* aux(a);
     a = b;
     b = aux;
     }
 
 template<class T, int SIZE>
 void List<T, SIZE>::sortDataMerge(const int& left, const int& right) {
-
-    ///Criterio de paro
     if ( left >= right ) {
         return;
-    }
-
-    ///Punto medio
+        }
     int m((left + right) / 2);
 
-    ///Divide y venceras
     sortDataMerge(left, m);
     sortDataMerge(m + 1, right);
 
-    ///Arreglo auxiliar
-    static T tmpData[SIZE];
+    static T* tmpData[SIZE];
     for (int i(left); i <= right; i++) {
         tmpData[i] = data[i];
-    }
+        }
 
-    ///Intercalacion
     int i(left), j(m + 1), x(left);
-
     while ( i <= m and j <= right ) {
 
-        while ( i <= m and tmpData[i] <= tmpData[j] ) {
+        while ( i <= m and *(tmpData[i]) <= *(tmpData[j]) ) {
             data[x++] = tmpData[i++];
-        }
+            }
 
         if ( i <= m ) {
-            while ( j <= right and tmpData[j] <= tmpData[i] ) {
+            while ( j <= right and *(tmpData[j]) <= *(tmpData[i]) ) {
                 data[x++] = tmpData[j++];
+                }
             }
         }
-    }
 
     while ( i <= m ) {
         data[x++] = tmpData[i++];
@@ -149,47 +153,52 @@ void List<T, SIZE>::sortDataMerge(const int& left, const int& right) {
     }
 
 template<class T, int SIZE>
-void List<T, SIZE>::sortDataQuick(const int& left, const int& right)
-{
-    ///Criterio de paro
+void List<T, SIZE>::sortDataQuick(const int& left, const int& right) {
     if ( left >= right ) {
         return;
-    }
+        }
 
-    ///Separacion
     int i(left), j(right);
-
-    ///Algoritmo de intercambio
     while ( i < j ) {
 
-        while ( i < j and data[i] <= data[right] ) {
+        while ( i < j and *(data[i]) <= *(data[right]) ) {
             i++;
-        }
+            }
 
-        while ( i < j and data[j] >= data[right] ) {
+        while ( i < j and *(data[j]) >= *(data[right]) ) {
             j--;
-        }
+            }
 
         if ( i != j ) {
             swapData( data[i], data[j] );
+            }
         }
-    }
 
     if ( i != right ) {
         swapData( data[i], data[right] );
-    }
+        }
 
-    //Divide y venceras
     sortDataQuick( left, i - 1 );
     sortDataQuick( i + 1, right );
-}
+    }
 
 template<class T, int SIZE>
-List<T, SIZE>::List() : last(-1) { }
+List<T, SIZE>::List() : last(-1) {
+    data = new T*[SIZE];
+    for (int i = 0; i < SIZE; i++) {
+        data[i] = nullptr;
+        }
+    }
 
 template<class T, int SIZE>
-List<T, SIZE>::List(List<T, SIZE>& l) {
+List<T, SIZE>::List(List<T, SIZE>& l) : List() {
     copyAll(l);
+    }
+
+template<class T, int SIZE>
+List<T, SIZE>::~List() {
+    deleteAll();
+    delete[] data;
     }
 
 template<class T, int SIZE>
@@ -212,11 +221,18 @@ void List<T, SIZE>::insertData(const T& d, const int& pos) {
         throw ListException("Posicion invalida, insertData");
         }
 
-    for (int i(last); i > pos; i-- ) {
-        data[i+1] = data[i];
+    T* aux = new T(d);
+    if (aux == nullptr) {
+        throw ListException("Memoria insuficiente, insertData");
         }
 
-    data[pos + 1] = d;
+    int i(last);
+    while (i > pos) {
+        data[i + 1] = data[i];
+        i--;
+        }
+
+    data[pos + 1] = aux;
     last++;
     }
 
@@ -226,10 +242,13 @@ void List<T, SIZE>::deleteData(const int& pos) {
         throw ListException("Posicion invalida, deleteData");
         }
 
-    for (int i(pos); i < last; i++) {
-        data[i] = data[i+1];
+    int i(pos);
+    while (i < last) {
+        data[i] = data[i + 1];
+        i++;
         }
-    last--;
+
+    data[last--] = nullptr;
     }
 
 template<class T, int SIZE>
@@ -238,7 +257,7 @@ T* List<T, SIZE>::retrieve(const int& pos) {
         throw ListException("Posicion invalida, retrieve");
         }
 
-    return &data[pos];
+    return data[pos];
     }
 
 template<class T, int SIZE>
@@ -269,8 +288,9 @@ int List<T, SIZE>::getSize() const {
 template<class T, int SIZE>
 string List<T, SIZE>::toString() const {
     string str;
-    for (int i(0); i <= last; i++) {
-        str += data[i].toString() + "\n";
+    int i(0);
+    while ( i <= last) {
+        str += data[i++]->toString() + "\n";
         }
     return str;
     }
@@ -281,7 +301,7 @@ int List<T, SIZE>::findDataLinear(const T &f) {
 
     while ( i <= last) {
 
-        if ( data[i] == f ) {
+        if ( *(data[i]) == f ) {
             return i;
             }
         i++;
@@ -299,11 +319,11 @@ int List<T, SIZE>::findDataBinary(const T &f) {
 
         m = (i + j) / 2;
 
-        if ( data[m] == f ) {
+        if ( *(data[m]) == f ) {
             return m;
             }
 
-        if ( f < data[m] ) {
+        if ( f < *(data[m]) ) {
             j = m - 1;
             }
         else {
@@ -324,7 +344,7 @@ void List<T, SIZE>::sortDataBubble() {
         j = 0;
         while ( j < i ) {
 
-            if ( data[j] > data[j + 1] ) {
+            if ( *(data[j]) > *(data[j + 1]) ) {
                 swapData(data[j],data[j+1]);
                 flaj = true;
                 }
@@ -341,7 +361,7 @@ void List<T, SIZE>::sortDataBubble() {
 template<class T, int SIZE>
 void List<T, SIZE>::sortDataInsert() {
     int i(1), j;
-    T aux;
+    T* aux;
 
     while ( i <= last ) {
         j = i;
@@ -371,7 +391,7 @@ void List<T, SIZE>::sortDataSelect() {
 
         while ( j <= last ) {
 
-            if ( data[j] < data[less_] ) {
+            if ( *(data[j]) < *(data[less_]) ) {
                 less_ = j;
                 }
 
@@ -386,40 +406,8 @@ void List<T, SIZE>::sortDataSelect() {
         }
     }
 
-/*template<class T, int SIZE>
-void List<T, SIZE>::sortDataShell()
-{
-    float factor(1.0 / 2.0);
-    int dif( (last + 1) * factor ), i, j;
-
-    while ( dif > 0 )
-    {
-        i = dif;
-
-        while ( i <= last ) {
-
-            j = i;
-            while ( j >= dif and data[j - dif] > data[j] ) {
-                swapData( data[j - dif], data[j] );
-                j -= dif;
-            }
-
-            i++;
-        }
-
-        dif *= factor;
-    }
-} */
-
 template<class T, int SIZE>
 void List<T, SIZE>::sortDataShell() {
-    //Factor 1/2
-    //unsigned gapSeries[] = { 524288, 262144, 131072, 65536, 32768, 16384, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0 };
-    //Factor 1/3
-    //unsigned gapSeries[] = { 531441, 177147, 59049, 19683, 6561, 2187, 729, 243, 81, 27, 9, 3, 1, 0 };
-    //Tokuda
-    //unsigned gapSeries[] = { 776591, 345152, 153401, 68178, 30301, 13467, 5985, 2660, 1182, 525, 233, 103, 46, 20, 9, 4, 1, 0};
-    //Ciura
     unsigned gapSeries[] = { 510774, 227011, 100894, 44842, 19930, 8858, 3937, 1750, 701, 301, 132, 57, 23, 10, 4, 1, 0};
     int gapPos(0), gap(gapSeries[gapPos]), i, j;
 
@@ -430,7 +418,7 @@ void List<T, SIZE>::sortDataShell() {
 
             j = i;
 
-            while ( j >= gap && data[j - gap] > data[j] ) {
+            while ( j >= gap && *(data[j - gap]) > *(data[j]) ) {
                 swapData( data[j - gap], data[j] );
                 j -= gap;
                 }
@@ -443,21 +431,22 @@ void List<T, SIZE>::sortDataShell() {
     }
 
 template<class T, int SIZE>
-void List<T, SIZE>::sortDataMerge()
-{
+void List<T, SIZE>::sortDataMerge() {
     sortDataMerge(0, last);
-}
+    }
 
 template<class T, int SIZE>
-void List<T, SIZE>::sortDataQuick()
-{
-    sortDataQuick(0 , last);
-}
-
+void List<T, SIZE>::sortDataQuick() {
+    sortDataQuick(0, last);
+    }
 
 template<class T, int SIZE>
 void List<T, SIZE>::deleteAll() {
-    last = -1;
+    int i(last);
+    while ( i >= 0) {
+        delete data[i--];
+        }
+    last = i;
     }
 
 template<class T, int SIZE>

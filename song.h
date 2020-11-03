@@ -21,7 +21,8 @@ class Song {
         static const int COMPARE_BY_AUTHOR      = 3;
 
         Song();
-        Song(Song&);
+        Song(const Song&);
+        ~Song();
 
         std::string getName() const;
         std::string getAuthor() const;
