@@ -325,7 +325,9 @@ void Broadcaster::orderData() {
     cout << "[B] Seleccion" << endl;
     cout << "[C] Inserccion" << endl;
     cout << "[D] Shell" << endl;
-    cout << "Seleccione una opcion (A, B, C, D): ";
+    cout << "[E] Merge" << endl;
+    cout << "[F] Quick" << endl;
+    cout << "Seleccione una opcion (A, B, C, D, E, F): ";
     getline(cin,str);
 
     if (str.length() != 1) {
@@ -351,6 +353,14 @@ void Broadcaster::orderData() {
         break;
         case 'D': {
             songs->sortDataShell();
+            }
+        break;
+        case 'E': {
+            songs->sortDataMerge();
+            }
+        break;
+        case 'F': {
+            songs->sortDataQuick();
             }
         break;
         default: {

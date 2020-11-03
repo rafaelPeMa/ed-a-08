@@ -22,8 +22,6 @@ Song& Song::operator = (const Song& s) {
     return *this;
     }
 
-Song::~Song() { }
-
 string Song::getName() const {
     return name;
     }

@@ -1,0 +1,24 @@
+# depslib dependency file v1.0
+1604439122 source:c:\users\rafae\documents\escuela\cucei\3°\ed\semana 8\actividad 08\main.cpp
+	"broadcaster.h"
+	"list.h"
+	"song.h"
+
+1602191085 c:\users\rafae\documents\escuela\cucei\3°\ed\semana 8\actividad 08\broadcaster.h
+	<iostream>
+	<string>
+	"list.h"
+	"song.h"
+
+1604439360 c:\users\rafae\documents\escuela\cucei\3°\ed\semana 8\actividad 08\list.h
+	<string>
+
+1604439446 c:\users\rafae\documents\escuela\cucei\3°\ed\semana 8\actividad 08\song.h
+	<string>
+
+1604439433 source:c:\users\rafae\documents\escuela\cucei\3°\ed\semana 8\actividad 08\song.cpp
+	"song.h"
+
+1604439588 source:c:\users\rafae\documents\escuela\cucei\3°\ed\semana 8\actividad 08\broadcaster.cpp
+	"broadcaster.h"
+

@@ -32,6 +32,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="broadcaster.cpp" />
+		<Unit filename="broadcaster.h" />
 		<Unit filename="list.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="song.cpp" />

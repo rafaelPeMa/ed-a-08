@@ -22,7 +22,6 @@ class Song {
 
         Song();
         Song(const Song&);
-        ~Song();
 
         std::string getName() const;
         std::string getAuthor() const;

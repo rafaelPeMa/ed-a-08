@@ -77,7 +77,6 @@ class List {
         List<T, SIZE>& operator = (const List<T, SIZE>&);
     };
 
-
 ///Implementacion
 
 using namespace std;
@@ -123,7 +122,7 @@ void List<T, SIZE>::sortDataMerge(const int& left, const int& right) {
     sortDataMerge(left, m);
     sortDataMerge(m + 1, right);
 
-    static T* tmpData[SIZE];
+    static T** tmpData = new T*[SIZE];
     for (int i(left); i <= right; i++) {
         tmpData[i] = data[i];
         }
@@ -241,6 +240,8 @@ void List<T, SIZE>::deleteData(const int& pos) {
     if ( !isValidPos(pos) ) {
         throw ListException("Posicion invalida, deleteData");
         }
+
+    delete data[pos];
 
     int i(pos);
     while (i < last) {
@@ -444,13 +445,15 @@ template<class T, int SIZE>
 void List<T, SIZE>::deleteAll() {
     int i(last);
     while ( i >= 0) {
-        delete data[i--];
+        delete data[i];
+        data[i--] = nullptr;
         }
     last = i;
     }
 
 template<class T, int SIZE>
 List<T, SIZE>& List<T, SIZE>::operator = (const List<T, SIZE>& l) {
+    deleteAll();
     copyAll(l);
     return *this;
     }
